@@ -1,33 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
+import TodoItem from './TodoItem';
 
-function TodoList() {
+const TodoList = ({ mockTodoData, onUpdate, onDelite }) => {
+    const [search, setSearch] = useState('');
+
+    const filteredTodes = () => {
+        return mockTodoData.filter((item) => {
+            item.task.toLowerCase().includes(search.toLocaleLowerCase);
+        });
+    };
+
     return (
         <div>
-            <div>
-                <h2>할 일 목록</h2>
-                <ul>
-                    <li>
-                        <input type="checkbox" name="" id="" />
-                        <strong>고양이 밥주기</strong>
-                        <p>2024.04.22</p>
-                        <button>삭제</button>
-                    </li>
-                    <li>
-                        <input type="checkbox" name="" id="" />
-                        <strong>감자 캐기</strong>
-                        <p>2024.04.22</p>
-                        <button>삭제</button>
-                    </li>
-                    <li>
-                        <input type="checkbox" name="" id="" />
-                        <strong>고양이 놀아주기</strong>
-                        <p>2024.04.22</p>
-                        <button>삭제</button>
-                    </li>
-                </ul>
-            </div>
+            <h2>할 일 목록</h2>
+            <input
+                type="search"
+                value={search}
+                onChange={(e) => {
+                    setSearch(e.target.value);
+                }}
+                placeholder="검색어를 입력하세요."
+            />
+            <ul>
+                {filteredTodes().map((item) => (console.log(item), (<TodoItem key={item.id} {...item} onUpdate />)))}
+            </ul>
         </div>
     );
-}
+};
 
 export default TodoList;
