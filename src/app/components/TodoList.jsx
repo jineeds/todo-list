@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import TodoItem from './TodoItem';
+import { set } from 'date-fns';
+import { useTodo } from '@/contexts/TodoContext';
 
-const TodoList = ({ mockTodoData, onUpdate, onDelite }) => {
+const TodoList = () => {
     const [search, setSearch] = useState('');
+    const { onUpdate, onDelete, todos } = useTodo();
 
-    const filteredTodes = () => {
-        return mockTodoData.filter((item) => {
-            item.task.toLowerCase().includes(search.toLocaleLowerCase);
-        });
+    const filteredTodos = () => {
+        return todos.filter((item) => item.task.toLowerCase().includes(search.toLowerCase()));
     };
 
     return (
@@ -20,9 +21,15 @@ const TodoList = ({ mockTodoData, onUpdate, onDelite }) => {
                     setSearch(e.target.value);
                 }}
                 placeholder="검색어를 입력하세요."
+                className="p-3 text-black w-full"
             />
-            <ul>
-                {filteredTodes().map((item) => (console.log(item), (<TodoItem key={item.id} {...item} onUpdate />)))}
+            <ul className="mt-5 flex flex-col gap-2 divide-y">
+                {filteredTodos().map(
+                    (item) => (
+                        console.log(item),
+                        (<TodoItem key={item.id} {...item} onUpdate={onUpdate} onDelete={onDelete} />)
+                    )
+                )}
             </ul>
         </div>
     );

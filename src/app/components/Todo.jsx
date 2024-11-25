@@ -1,51 +1,17 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import TodoEditor from './TodoEditor';
 import TodoHd from './TodoHd';
+import TodoEditor from './TodoEditor';
 import TodoList from './TodoList';
 
-function Todo() {
-    const [todos, setTodes] = useState([]);
-
-    useEffect(() => {
-        const savedTodos = JSON.parse(localStorage.getItem('todos')) || [];
-        setTodes(savedTodos);
-    }, []);
-
-    useEffect(() => {
-        localStorage.setItem('todos', JSON.stringify(todos));
-    }, [todos]);
-
-    const addTodo = (task) => {
-        const newTodo = {
-            id: todos.length + 1,
-            isDone: false,
-            task: task,
-            createDate: new Date().toLocaleDateString(),
-        };
-
-        setTodes([newTodo, ...todos]);
-    };
-
-    const onUpdate = (id) => {
-        setTodes(
-            todos.map((todo) => {
-                return todo.id === id ? { ...todo, isDone: !todo.isDone } : 'todo';
-            })
-        );
-    };
-
-    const onDelete = (id) => {
-        todos.filter((todo) => todo.id !== id);
-    };
+const Todo = () => {
     return (
-        <div>
+        <div className="flex flex-col gap-4 p-8 pb-40">
             <TodoHd />
-            <TodoEditor addTodo={addTodo} />
-            <TodoList mockTodoData={todos} onUpdate={onUpdate} onDelite={onDelete} />
+            <TodoEditor />
+            <TodoList />
         </div>
     );
-}
+};
 
 export default Todo;
